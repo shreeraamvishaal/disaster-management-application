@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tide Information</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold text-gray-700 mb-8">Tide Information</h1>
+        
+        <!-- Interactive Tide Chart -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Interactive Tide Chart</h2>
+            <canvas id="tideChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Tide Alerts -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Set Tide Alert</h2>
+            <form id="alertForm">
+                <label for="alertLevel" class="block text-gray-700">Alert Level (meters):</label>
+                <input type="number" id="alertLevel" name="alertLevel" step="0.01" class="w-full p-2 border border-gray-300 rounded" required>
+                <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700">Set Alert</button>
+            </form>
+            <p id="alertMessage" class="mt-4 text-gray-700"></p>
+        </div>
+
+        <!-- Tide Predictions for Events -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Tide Predictions for Specific Date</h2>
+            <form id="predictionForm">
+                <label for="eventDate" class="block text-gray-700">Date:</label>
+                <input type="date" id="eventDate" name="eventDate" class="w-full p-2 border border-gray-300 rounded" required>
+                <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700">Get Predictions</button>
+            </form>
+            <p id="predictionResult" class="mt-4 text-gray-700"></p>
+        </div>
+
+        <!-- Tide Information by Location -->
+        <div>
+            <h2 class="text-xl font-semibold mb-4">Get Tide Information by Location</h2>
+            <form id="locationForm">
+                <label for="latitude" class="block text-gray-700">Latitude:</label>
+                <input type="text" id="latitude" name="latitude" class="w-full p-2 border border-gray-300 rounded" required>
+                <label for="longitude" class="block text-gray-700 mt-2">Longitude:</label>
+                <input type="text" id="longitude" name="longitude" class="w-full p-2 border border-gray-300 rounded" required>
+                <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700">Get Tide Information</button>
+            </form>
+            <div id="locationTideData" class="mt-4 text-gray-700"></div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = '9d0b5c9c-f767-4712-a078-3151ffec56cb'; // Replace with your World Tides API key
+
+        // Initialize the tide chart
+        const ctx = document.getElementById('tideChart').getContext('2d');
+
+        function fetchTideData(lat, lon) {
+            const url = `https://www.worldtides.info/api/v3?heights&date=2024-09-17&lat=${lat}&lon=${lon}&key=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.heights) {
+                        const labels = data.heights.map(item => new Date(item.timestamp * 1000).toLocaleTimeString());
+                        const tideLevels = data.heights.map(item => item.height);
+
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Tide Level',
+                                    data: tideLevels,
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    x: {
+                                        type: 'time',
+                                        time: {
+                                            unit: 'hour'
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Time'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Tide Level (meters)'
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        console.error('No tide heights data available.');
+                    }
+                })
+                .catch(error => console.error('Error fetching tide data:', error));
+        }
+
+        // Tide Alerts
+        document.getElementById('alertForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const alertLevel = parseFloat(document.getElementById('alertLevel').value);
+            document.getElementById('alertMessage').textContent = `Alert set for tide levels above ${alertLevel} meters.`;
+        });
+
+        // Tide Predictions
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const eventDate = document.getElementById('eventDate').value;
+            const lat = 33.768321; // Replace with actual latitude if dynamic
+            const lon = -118.195617; // Replace with actual longitude if dynamic
+
+            const url = `https://www.worldtides.info/api/v3?heights&date=${eventDate}&lat=${lat}&lon=${lon}&key=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.heights) {
+                        const heights = data.heights.map(item => `${new Date(item.timestamp * 1000).toLocaleTimeString()}: ${item.height} meters`);
+                        document.getElementById('predictionResult').textContent = `Predictions for ${eventDate}: ${heights.join(', ')}`;
+                    } else {
+                        document.getElementById('predictionResult').textContent = 'No data available for the selected date.';
+                    }
+                })
+                .catch(error => console.error('Error fetching tide predictions:', error));
+        });
+
+        // Tide Information by Location
+        document.getElementById('locationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+
+            fetchTideData(latitude, longitude);
+
+            // Fetch tide extremes for current location
+            const extremesUrl = `https://www.worldtides.info/api/v3?extremes&date=2024-09-17&lat=${latitude}&lon=${longitude}&key=${apiKey}`;
+            fetch(extremesUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.extremes) {
+                        const extremes = data.extremes.map(item => `High: ${item.high} meters, Low: ${item.low} meters`);
+                        document.getElementById('locationTideData').innerHTML = `Tide extremes: ${extremes.join(', ')}`;
+                    } else {
+                        document.getElementById('locationTideData').innerHTML = 'No tide extremes data available.';
+                    }
+                })
+                .catch(error => console.error('Error fetching tide extremes:', error));
+        });
+
+    </script>
+</body>
+</html>

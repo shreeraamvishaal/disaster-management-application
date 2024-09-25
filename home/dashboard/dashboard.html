@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-700">Dashboard</h1>
+            <div class="flex space-x-4">
+                <button class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 shadow-md hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:-translate-y-2">English</button>
+                <button class="px-4 py-2 bg-gray-300 text-gray-700 font-semibold rounded-lg shadow-md hover:bg-gray-400 shadow-md hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:-translate-y-2">मराठी</button>
+            </div>
+        </div>
+
+        <!-- Grid of Dashboard Items -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dashboard Item -->
+            <!-- Update the Live Weather item -->
+        <a href="./././weather-updates/live_weather.html">
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-cloud-sun text-blue-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">Live Weather</p>
+            </div>
+        </a>
+
+        <a href="./tide-updates/tide_info.html">
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-water text-blue-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">Tide</p>
+            </div>
+        </a>
+
+            <a href="./imd-forecast/imd_forecast.html">
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-cloud-showers-heavy text-gray-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">IMD Forecast</p>
+            </div>
+            </a>
+
+            <a href="satellite_images.html">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                    <i class="fas fa-satellite text-green-500 text-4xl mb-4"></i>
+                    <p class="font-semibold text-gray-700">Satellite Images</p>
+                </div>
+            </a>
+            
+
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-phone text-yellow-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">Emergency Contact</p>
+            </div>
+            
+            <a href="/home/dashboard/safetytips.html">
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-shield-alt text-gray-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">Safety Tips</p>
+            </div>
+         </a>
+
+            <a href="/home/dashboard/dos&donts.html">
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-clipboard-check text-green-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">Do's / Don't</p>
+            </div>
+            </a>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-map-marker-alt text-blue-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">Your Ward</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition">
+                <i class="fas fa-search text-gray-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">Predictions</p>
+            </div>
+
+            <!-- AI Chatbot Item -->
+            <div id="chatbot-button" class="bg-white rounded-lg shadow-lg p-6 text-center hover:bg-blue-50 transition cursor-pointer">
+                <i class="fas fa-robot text-purple-500 text-4xl mb-4"></i>
+                <p class="font-semibold text-gray-700">AI Chatbot</p>
+            </div>
+            </div>
+        </div>
+
+        <!-- Footer Navigation -->
+        <div class="flex justify-around mt-10">
+            <a href="/home/index.html">
+                <button class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 shadow-md hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:-translate-y-2">
+                    Home
+                </button>
+            </a> 
+            <a href="/home/about.html">           
+            <button  class="px-6 py-3 bg-gray-300 text-gray-700 font-semibold rounded-lg shadow-md hover:bg-gray-400 shadow-md hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:-translate-y-2">About Us</button> </a>
+            <a href="/home/dashboard/sosnumbers.html">
+            <button class="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 shadow-md hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:-translate-y-2">SOS</button>
+            </a>
+            <a href="/home/dashboard/helpline.html">
+            <button class="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 shadow-md hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:-translate-y-2">Helpline</button>
+            </a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('chatbot-button').addEventListener('click', () => {
+            window.location.href = 'http://127.0.0.1:5000'; // URL of the chatbot page
+        });
+    </script>
+</body>
+</html>

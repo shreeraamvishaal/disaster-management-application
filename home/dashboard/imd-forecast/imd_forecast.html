@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f8; /* Light blue background for a cooler look */
+            color: #333; /* Dark gray text for better readability */
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .card p {
+            margin: 8px 0;
+        }
+        .header {
+            background-color: #1d4ed8; /* Blue color for header */
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            padding: 12px;
+            font-size: 14px;
+            color: #6b7280; /* Gray color for footer text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container p-4">
+        <div class="header">
+            <h1 class="text-4xl font-bold">Weather Dashboard</h1>
+        </div>
+        <div id="weather-info" class="space-y-6">
+            <!-- Weather details will be injected here by JavaScript -->
+        </div>
+        <div class="footer">
+            <p>Weather data provided by Open-Meteo API</p>
+        </div>
+    </div>
+
+    <script>
+        async function fetchWeatherData() {
+            // Use browser geolocation to get user location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    try {
+                        const response = await fetch(`http://127.0.0.1:5003/weather?latitude=${lat}&longitude=${lon}`);
+                        const data = await response.json();
+                        displayWeatherData(data);
+                    } catch (error) {
+                        console.error('Error fetching weather data:', error);
+                    }
+                }, (error) => {
+                    console.error('Error getting geolocation:', error);
+                    // Fallback to default location if geolocation fails
+                    fetchDefaultWeatherData();
+                });
+            } else {
+                // Fallback to default location if geolocation is not supported
+                fetchDefaultWeatherData();
+            }
+        }
+
+        async function fetchDefaultWeatherData() {
+            try {
+                const response = await fetch(`http://127.0.0.1:5003/weather?latitude=52.52&longitude=13.41`);
+                const data = await response.json();
+                displayWeatherData(data);
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+            }
+        }
+
+        function displayWeatherData(data) {
+            const weatherInfo = document.getElementById('weather-info');
+            weatherInfo.innerHTML = `
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-4">Weather Details</h2>
+                    <p><strong>Location:</strong> ${data.location}</p>
+                    <p><strong>Temperature:</strong> ${data.temperature_2m} °C</p>
+                    <p><strong>Dew Point:</strong> ${data.dew_point_2m} °C</p>
+                    <p><strong>Apparent Temperature:</strong> ${data.apparent_temperature} °C</p>
+                    <p><strong>Precipitation Probability:</strong> ${data.precipitation_probability} %</p>
+                    <p><strong>Rain:</strong> ${data.rain} mm</p>
+                    <p><strong>Weather Code:</strong> ${data.weather_code}</p>
+                    <p><strong>Surface Pressure:</strong> ${data.surface_pressure} hPa</p>
+                    <p><strong>Cloud Cover (Low):</strong> ${data.cloud_cover_low} %</p>
+                    <p><strong>Cloud Cover (Mid):</strong> ${data.cloud_cover_mid} %</p>
+                    <p><strong>Cloud Cover (High):</strong> ${data.cloud_cover_high} %</p>
+                    <p><strong>Visibility:</strong> ${data.visibility} m</p>
+                    <p><strong>Wind Speed (10m):</strong> ${data.wind_speed_10m} m/s</p>
+                    <p><strong>Wind Speed (80m):</strong> ${data.wind_speed_80m} m/s</p>
+                    <p><strong>Wind Speed (180m):</strong> ${data.wind_speed_180m} m/s</p>
+                    <p><strong>Wind Direction (80m):</strong> ${data.wind_direction_80m}°</p>
+                    <p><strong>Wind Direction (120m):</strong> ${data.wind_direction_120m}°</p>
+                    <p><strong>Wind Direction (180m):</strong> ${data.wind_direction_180m}°</p>
+                    <p><strong>Wind Gusts (10m):</strong> ${data.wind_gusts_10m} m/s</p>
+                    <p><strong>Soil Temperature (0cm):</strong> ${data.soil_temperature_0cm} °C</p>
+                    <p><strong>Soil Temperature (6cm):</strong> ${data.soil_temperature_6cm} °C</p>
+                    <p><strong>Soil Temperature (54cm):</strong> ${data.soil_temperature_54cm} °C</p>
+                    <p><strong>Soil Moisture (0 to 1cm):</strong> ${data.soil_moisture_0_to_1cm} %</p>
+                    <p><strong>Soil Moisture (1 to 3cm):</strong> ${data.soil_moisture_1_to_3cm} %</p>
+                    <p><strong>Soil Moisture (27 to 81cm):</strong> ${data.soil_moisture_27_to_81cm} %</p>
+                </div>
+            `;
+        }
+
+        // Initialize fetch
+        fetchWeatherData();
+    </script>
+</body>
+</html>
