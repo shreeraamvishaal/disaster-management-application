@@ -45,6 +45,3 @@ The sleek and responsive user interface is built with **HTML**, **CSS**, and **T
 - **Gemini API:** For AI-powered disaster insights.  
 - **OpenWeatherMap API:** For real-time weather forecasts.  
 - **Tidal and Weather APIs:** Additional APIs for complete weather and tide data.  
-
-Feel free to contribute, report issues, or suggest new features! 💡  
-**Let's make disaster management smarter together!** 🌟
